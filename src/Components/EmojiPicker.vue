@@ -28,6 +28,16 @@
         required: false,
         default: '',
       },
+      frequentEmojiLimit: {
+        type: Number,
+        required: false,
+        default: 10,        
+      },
+      frequentlyUsedKey: {
+        type: String,
+        required: false,
+        default: '',        
+      },
       emojiTable: {
         type: Object,
         required: false,
@@ -69,10 +79,20 @@
 
         return this.emojiTable
       },
+      frequentlyUsedEmojis(){
+        return this.emojiTable["Frequently used"];
+      },
     },
     methods: {
       insert(emoji) {
         this.$emit('emoji', emoji)
+        if(!this.frequentlyUsedEmojis[emoji.emojiName]){
+            this.frequentlyUsedEmojis[emoji.emojiName] = emoji.emoji;
+            const keys = Object.keys(this.frequentlyUsedEmojis)
+            if(keys.length > this.frequentEmojiLimit)
+                delete this.frequentlyUsedEmojis[keys[0]];
+            localStorage[this.frequentlyUsedKey] = JSON.stringify(this.frequentlyUsedEmojis);
+        }
       },
       toggle(e) {
         this.display.visible = ! this.display.visible
@@ -111,6 +131,18 @@
           el.__vueClickOutside__ = null
         },
       },
+    },
+    beforeMount(){
+      if(localStorage[this.frequentlyUsedKey] !== undefined)
+        this.emojiTable["Frequently used"] = JSON.parse(localStorage[this.frequentlyUsedKey]);
+      else
+        this.emojiTable["Frequently used"] = {
+                                                'thumbs_up': '👍',
+                                                'clap': '👏',
+                                                'blush': '😊',
+                                                'smiley': '😃',
+                                                'persevere': '😣',
+                                              } ;   
     },
     mounted() {
       document.addEventListener('keyup', this.escape)

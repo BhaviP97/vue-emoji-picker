@@ -1,7 +1,7 @@
 export default {
   'Frequently used': {
     'thumbs_up': '👍',
-    '-1': '👎',
+    'thumbs_down': '👎',
     'sob': '😭',
     'confused': '😕',
     'neutral_face': '😐',
@@ -542,7 +542,7 @@ export default {
   },
   'Symbols': {
     'keycap_ten': '🔟',
-    '1234': '🔢',
+    'numbers': '🔢',
     'symbols': '🔣',
     'capital_abcd': '🔠',
     'abcd': '🔡',
@@ -628,7 +628,7 @@ export default {
     'heavy_minus_sign': '➖',
     'heavy_division_sign': '➗',
     'white_flower': '💮',
-    '100': '💯',
+    'hundred_points': '💯',
     'radio_button': '🔘',
     'link': '🔗',
     'curly_loop': '➰',
