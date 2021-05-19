@@ -87,10 +87,14 @@
       insert(emoji) {
         this.$emit('emoji', emoji)
         if(!this.frequentlyUsedEmojis[emoji.emojiName]){
-            this.frequentlyUsedEmojis[emoji.emojiName] = emoji.emoji;
+            let arrRecentEmojis = Object.entries(this.frequentlyUsedEmojis);
+            arrRecentEmojis.unshift([emoji.emojiName,emoji.emoji]);
+            this.emojiTable["Frequently used"] = Object.fromEntries(arrRecentEmojis);
+
             const keys = Object.keys(this.frequentlyUsedEmojis)
             if(keys.length > this.frequentEmojiLimit)
-                delete this.frequentlyUsedEmojis[keys[0]];
+              delete this.emojiTable["Frequently used"][keys[keys.length - 1]]
+            
             localStorage[this.frequentlyUsedKey] = JSON.stringify(this.frequentlyUsedEmojis);
         }
       },
@@ -142,7 +146,7 @@
                                                 'blush': '😊',
                                                 'smiley': '😃',
                                                 'persevere': '😣',
-                                              } ;   
+                                              };   
     },
     mounted() {
       document.addEventListener('keyup', this.escape)
