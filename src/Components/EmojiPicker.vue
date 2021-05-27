@@ -86,17 +86,16 @@
     methods: {
       insert(emoji) {
         this.$emit('emoji', emoji)
-        if(!this.frequentlyUsedEmojis[emoji.emojiName]){
-            let arrRecentEmojis = Object.entries(this.frequentlyUsedEmojis);
-            arrRecentEmojis.unshift([emoji.emojiName,emoji.emoji]);
-            this.emojiTable["Frequently used"] = Object.fromEntries(arrRecentEmojis);
+        delete this.frequentlyUsedEmojis[emoji.emojiName];
+        let arrRecentEmojis = Object.entries(this.frequentlyUsedEmojis);
+        arrRecentEmojis.unshift([emoji.emojiName,emoji.emoji]);
+        this.emojiTable["Frequently used"] = Object.fromEntries(arrRecentEmojis);
 
-            const keys = Object.keys(this.frequentlyUsedEmojis)
-            if(keys.length > this.frequentEmojiLimit)
-              delete this.emojiTable["Frequently used"][keys[keys.length - 1]]
-            
-            localStorage[this.frequentlyUsedKey] = JSON.stringify(this.frequentlyUsedEmojis);
-        }
+        const keys = Object.keys(this.frequentlyUsedEmojis)
+        if(keys.length > this.frequentEmojiLimit)
+          delete this.emojiTable["Frequently used"][keys[keys.length - 1]]
+        
+        localStorage[this.frequentlyUsedKey] = JSON.stringify(this.frequentlyUsedEmojis);
       },
       toggle(e) {
         this.display.visible = ! this.display.visible
